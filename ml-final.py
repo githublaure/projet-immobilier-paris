@@ -50,23 +50,41 @@ def index():
             city = request.form.get('ville', '')
             property_type = request.form.get('local', '')
 
-            # Use default values for any address
-            sample_house = pd.DataFrame({
-                'surface': [75.0],  # Default surface area
-                'nombre_pieces_principales': [3],  # Default number of rooms
-                'dist_ratp': [0.5],  # Default distance to metro
-                'year': [2021]  # Current year
-            })
+            from geopy.geocoders import GoogleV3
+            from geopy.distance import geodesic
+            import datetime
 
-            # Store the address for display purposes
-            address_upper = address.upper()
-            if not address:
-                sample_house = pd.DataFrame({
-                    'surface': [75.0],
-                    'nombre_pieces_principales': [3],
-                    'dist_ratp': [0.5],
-                    'year': [2021]
-                })
+            # Initialize the geocoder
+            geolocator = GoogleV3(api_key='YOUR_GOOGLE_API_KEY')
+
+            # Get coordinates from address
+            if address:
+                location = geolocator.geocode(address + ", " + city)
+                if location:
+                    # Load RATP stations data
+                    stations_ratp = pd.read_csv('static/ratp-geocoordinates.csv')
+                    
+                    # Calculate distance to nearest RATP station
+                    distances = stations_ratp.apply(
+                        lambda row: geodesic(
+                            (location.latitude, location.longitude),
+                            (row['lat'], row['lng'])
+                        ).kilometers,
+                        axis=1
+                    )
+                    min_dist_ratp = distances.min()
+
+                    # Create sample with real location data
+                    sample_house = pd.DataFrame({
+                        'surface': [float(request.form.get('surface', 75.0))],
+                        'nombre_pieces_principales': [int(request.form.get('pieces', 3))],
+                        'dist_ratp': [min_dist_ratp],
+                        'year': [datetime.datetime.now().year]
+                    })
+                else:
+                    raise ValueError("Adresse non trouvée")
+            else:
+                raise ValueError("Adresse requise")
 
             sample_scaled = scaler.transform(sample_house)
             predicted_price = model.predict(sample_scaled)[0]
