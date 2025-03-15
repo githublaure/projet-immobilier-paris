@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web-app Immobilier</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+
+
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+  </head>
+  <body>
+
+
+
+    <h1 class="bandeau" style="margin-bottom:0px">Immobilier Web-App <div align="right"><a href="{{ url_for('about')}}"> <button class="btn btn btn-sm"><strong><font color="#242531">À propos</font> </strong></button> </a><a href="{{ url_for('index')}}"> 
+    
+    <strong><font color="#ffe237"><i class="fas fa-home fa-xs"></i></font> </strong>
+    </a>&nbsp;&nbsp;&nbsp;</div></h1>
+
+
+
+
+
+       <!-- layout about -->
+<div class="jumbotron" style="background-color: lightgrey;">
+        <div class="container">
+          <h1 class="titreapp" style="color: #242531; font-family: courrier new, monospace">Web-App Machine Learning</h1>
+          <p>Dans le cadre de notre formation "bootcamp" en data-analyse, nous avons déployé une web-app afin d'évaluer le prix au mètre carré à Paris. </p>
+          <p><a class="btn btn-primary btn-lg" href="https://data-bird.co" target="_blank" "role="button" style="font-family: courrier new, monospace">En savoir plus »</a></p>
+        </div>
+</div>
+    
+</div>
+<div class="container">
+        
+        <div class="row">
+
+          <div class="col-md-7">
+          <h2 style="color: #242531; font-family: courrier new, monospace"> À propos</h2>
+            <p>Objectif de la web-app : optimiser l'évaluation du prix à Paris et au sein de la petite couronne grâce au Machine Learning. <br />Notre web-app prend en "input" l'adresse et retourne le prix estimé au m<sup>2</sup> en se basant sur la data publique disponible.
+             </p>
+            <p>
+         
+         <a class="btn btn" href="{{ url_for('index')}}" role="button" style="background-color: #ffe237; font-family: courier new, courier, monospace; font-weight: bold"><font color=" #242531"><i class="fas fa-home fa-lg"></i></font> retour Accueil&nbsp;</a>
+            
+            </p>
+          </div>
+         
+         </div>
+
+        
+</div>
+
+        <hr>
+
+
+
+
+        
+
+
+<br /><br />
+
+
+        <div class="imgContainer">
+      <figure>
+        <img src="static/louise.png" class="trombi lighter" />
+        <figcaption>
+          Louise<br />
+          <a href="#" target="_new"
+            ><img
+              src="static/twitterj.png"
+              onmouseover="this.src='static/twitterv.png'"
+              width="30px"
+              onmouseout="this.src='static/twitterj.png'"
+              width="30px"
+              onclick="this.src='static/twitterv.png'"
+              width="30px"
+          /></a>
+          <a href="https://www.linkedin.com/in/louise-amsellem-chef-de-projet-digital-idf/" target="_new"
+            ><img
+              src="static/linkedinj.png"
+              onmouseover="this.src='static/linkedinv.png'"
+              width="30px"
+              onmouseout="this.src='static/linkedinj.png'"
+              width="30px"
+              onclick="this.src='static/linkedinv.png'"
+              width="30px"
+          /></a>
+          <a href="https://github.com/LouiseAmsellem" target="_new"
+            ><img
+              src="static/githubj.png"
+              onmouseover="this.src='static/githubv.png'"
+              width="30px"
+              onmouseout="this.src='static/githubj.png'"
+              width="30px"
+              onclick="this.src='static/githubv.png'"
+              width="30px"
+          /></a>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="static/joao.png" class="trombi lighter" />
+        <figcaption>
+          João<br />
+          <a href="#" target="_new"
+            ><img
+              src="static/twitterj.png"
+              onmouseover="this.src='static/twitterv.png'"
+              width="30px"
+              onmouseout="this.src='static/twitterj.png'"
+              width="30px"
+              onclick="this.src='static/twitterv.png'"
+              width="30px"
+          /></a>
+          <a href="https://www.linkedin.com/in/joaomacalos/" target="_new"
+            ><img
+              src="static/linkedinj.png"
+              onmouseover="this.src='static/linkedinv.png'"
+              width="30px"
+              onmouseout="this.src='static/linkedinj.png'"
+              width="30px"
+              onclick="this.src='static/linkedinv.png'"
+              width="30px"
+          /></a>
+          <a href="https://github.com/joaomacalos" target="_new"
+            ><img
+              src="static/githubj.png"
+              onmouseover="this.src='static/githubv.png'"
+              width="30px"
+              onmouseout="this.src='static/githubj.png'"
+              width="30px"
+              onclick="this.src='static/githubv.png'"
+              width="30px"
+          /></a>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="static/laure.png" class="trombi lighter" />
+        <figcaption>
+          Laure<br />
+          <a href="#"
+            ><img
+              src="static/twitterj.png"
+              onmouseover="this.src='static/twitterv.png'"
+              width="30px"
+              onmouseout="this.src='static/twitterj.png'"
+              width="30px"
+              onclick="this.src='static/twitterv.png'"
+              width="30px"
+          /></a>
+          <a href="https://www.linkedin.com/in/laure-agrech-7a013167/" target="_blank"
+            ><img
+              src="static/linkedinj.png"
+              onmouseover="this.src='static/linkedinv.png'"
+              width="30px"
+              onmouseout="this.src='static/linkedinj.png'"
+              width="30px"
+              onclick="this.src='static/linkedinv.png'"
+              width="30px"
+          /></a>
+          <a href="https://github.com/yoopiyo" target="_blank"
+            ><img
+              src="static/githubj.png"
+              onmouseover="this.src='static/githubv.png'"
+              width="30px"
+              onmouseout="this.src='static/githubj.png'"
+              width="30px"
+              onclick="this.src='static/githubv.png'"
+              width="30px"
+          /></a>
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img src="static/erwan.png" class="trombi lighter" />
+        <figcaption>
+          Erwan<br />
+          <a href="#" target="_new"
+            ><img
+              src="static/twitterj.png"
+              onmouseover="this.src='static/twitterv.png'"
+              width="30px"
+              onmouseout="this.src='static/twitterj.png'"
+              width="30px"
+              onclick="this.src='static/twitterv.png'"
+              width="30px"
+          /></a>
+          <a href="https://www.linkedin.com/in/erwan-de-villechabrolle-01809696/" target="_new"
+            ><img
+              src="static/linkedinj.png"
+              onmouseover="this.src='static/linkedinv.png'"
+              width="30px"
+              onmouseout="this.src='static/linkedinj.png'"
+              width="30px"
+              onclick="this.src='static/linkedinv.png'"
+              width="30px"
+          /></a>
+          <a href="https://github.com/erwandevdotcom" target="_blank"
+            ><img
+              src="static/githubj.png"
+              onmouseover="this.src='static/githubv.png'"
+              width="30px"
+              onmouseout="this.src='static/githubj.png'"
+              width="30px"
+              onclick="this.src='static/githubv.png'"
+              width="30px"
+          /></a>
+        </figcaption>
+      </figure>
+    </div>
+   
+<br><br>
+<br><br>
+
+<div 
+class="gitHub"
+style="position: fixed; bottom: 0; width: 100%"
+>
+    <a href="https://github.com/joaomacalos/projet-immobilier-paris" target="_blank"> Open-source code </a
+    ><img src="static/githubj.png" width="30px" /> 
+  
+ </div>
+  </body>
+</html>
