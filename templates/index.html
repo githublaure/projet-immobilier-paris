@@ -103,25 +103,19 @@
             <td><input type="number" id="pieces" name="pieces" required min="1" max="20"
                 style="display: inline-block; border: 2px solid #21e49d; border-radius:5px; padding: 5px; width: 200px;"/>
             </td></tr>
-            <tr><td><label for="ville"><strong>Ville </strong><font color="#ffe237">*
-              </font color></label></td><td>
-                <input 
-                type="text"
-                id="ville"
-                name="ville"
-                readonly
-                value="{{ request.form['ville'] }}"
-                style="display: inline-block; height: 30px; width: 200px; border-radius: 5px; border: 2px solid #21e49d; background-color: #f5f5f5;"
-                />
-              <option>Ablon-Sur-Seine</option>
-              <option>Alfortville</option>
-              <option>Antony</option>
-              <option>Arcueil</option>
-              <option>Asnieres-Sur-Seine</option>
-              <option>Aubervilliers</option>
-              <option>Aulnay-Sous-Bois</option>
-              <option>Bagneux</option>
-              <option>Bagnolet</option>
+            <tr><td><label for="ville"><strong>Ville</strong> <font color="#ffe237">*</font></label></td>
+            <td><select id="ville" name="ville" class="form-control" required>
+                <option value="">Choisir une ville...</option>
+              <option value="Ablon-Sur-Seine">Ablon-Sur-Seine</option>
+                <option value="Alfortville">Alfortville</option>
+                <option value="Antony">Antony</option>
+                <option value="Arcueil">Arcueil</option>
+                <option value="Asnieres-Sur-Seine">Asnieres-Sur-Seine</option>
+                <option value="Aubervilliers">Aubervilliers</option>
+                <option value="Aulnay-Sous-Bois">Aulnay-Sous-Bois</option>
+                <option value="Bagneux">Bagneux</option>
+                <option value="Bagnolet">Bagnolet</option>
+              </select></td></tr>
               <option>Bobigny</option>
               <option>Bois-Colombes</option>
               <option>Boissy-Saint-Leger</option>
