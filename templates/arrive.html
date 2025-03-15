@@ -4,6 +4,7 @@
 <head>
     <title>Résultat</title>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         .price-container {
             background: linear-gradient(to right, #e0f7fa, #b2ebf2, #80deea, #4dd0e1, #26c6da);
@@ -30,6 +31,11 @@
             font-weight: bold;
             color: #242531;
         }
+        #map {
+            height: 500px;
+            width: 80%;
+            margin: 20px auto;
+        }
     </style>
 </head>
 <body>
@@ -55,6 +61,51 @@
         <strong>Ville :</strong> {{ city }}<br/>
         <strong>Type de bien :</strong> {{ property_type }}
     </p>
+
+    <div id="map"></div>
+
+    <script>
+        fetch('/get_prices_data')
+            .then(response => response.json())
+            .then(data => {
+                const values = Object.values(data);
+                const locations = Object.keys(data).map(code => {
+                    if(code.startsWith('75')) {
+                        return `Paris ${code.slice(3)}e`;
+                    }
+                    return code;
+                });
+
+                const mapData = [{
+                    type: 'choropleth',
+                    locationmode: 'country names',
+                    locations: locations,
+                    z: values,
+                    text: locations.map((loc, i) => `${loc}: ${values[i]}€/m²`),
+                    colorscale: 'Viridis',
+                    colorbar: {
+                        title: 'Prix/m²',
+                        ticksuffix: '€'
+                    }
+                }];
+
+                const layout = {
+                    title: 'Prix moyen par arrondissement',
+                    geo: {
+                        scope: 'europe',
+                        center: {
+                            lat: 48.8566,
+                            lon: 2.3522
+                        },
+                        projection: {
+                            scale: 50
+                        }
+                    }
+                };
+
+                Plotly.newPlot('map', mapData, layout);
+            });
+    </script>
 
     <div class="gitHub">
         <a href="https://github.com/joaomacalos/projet-immobilier-paris" target="_blank">Open-source code</a>

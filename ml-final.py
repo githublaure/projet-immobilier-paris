@@ -76,6 +76,11 @@ def index():
 
     return render_template('index.html')
 
+@app.route('/get_prices_data')
+def get_prices_data():
+    prices_by_district = data.groupby('code_postal')['prix_mcarre'].mean().round(2).to_dict()
+    return prices_by_district
+
 @app.route('/about')
 def about():
     return render_template('about.html')
