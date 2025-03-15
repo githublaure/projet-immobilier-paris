@@ -25,14 +25,14 @@
             autocomplete.addListener('place_changed', function() {
                 var place = autocomplete.getPlace();
                 var city = '';
-                
+
                 for (var component of place.address_components) {
                     if (component.types.includes('locality')) {
                         city = component.long_name;
                         break;
                     }
                 }
-                
+
                 document.getElementById('ville').value = city;
             });
         });
@@ -53,7 +53,7 @@
 
 
     <h1 class="bandeau">Immobilier Web-App <div align="right"><a href="{{ url_for('about')}}"> <button class="btn btn btn-sm"><strong><font color="#242531">À propos</font> </strong></button> </a><a href="{{ url_for('index')}}"> 
-    
+
     <strong><font color="#ffe237"><i class="fas fa-home fa-xs"></i></font> </strong>
     </a>&nbsp;&nbsp;&nbsp;</div></h1><br />
 
@@ -75,7 +75,7 @@
       " align="center"
     >
 <br />
-    
+
 
     <div class="form-container">
         <div class="form-group">
@@ -105,32 +105,54 @@
                 style="display: inline-block; border: 2px solid #21e49d; border-radius:5px; padding: 5px; width: 200px;"/>
             </td></tr>
             <tr><td><label for="ville"><strong>Ville</strong> <font color="#ffe237">*</font></label></td>
-            <td><select id="ville" name="ville" class="form-control" required>
-                <option value="">Choisir une ville...</option>
-                <option value="Ablon-Sur-Seine">Ablon-Sur-Seine</option>
-                <option value="Alfortville">Alfortville</option>
-                <option value="Antony">Antony</option>
-                <option value="Arcueil">Arcueil</option>
-                <option value="Asnieres-Sur-Seine">Asnieres-Sur-Seine</option>
-                <option value="Aubervilliers">Aubervilliers</option>
-                <option value="Aulnay-Sous-Bois">Aulnay-Sous-Bois</option>
-                <option value="Bagneux">Bagneux</option>
-                <option value="Bagnolet">Bagnolet</option>
-                <option value="Bobigny">Bobigny</option>
-                <option value="Bois-Colombes">Bois-Colombes</option>
-                <option value="Boissy-Saint-Leger">Boissy-Saint-Leger</option>
-                <option value="Bondy">Bondy</option>
-                <option value="Bonneuil-Sur-Marne">Bonneuil-Sur-Marne</option>
-                <option value="Boulogne-Billancourt" selected>Boulogne-Billancourt</option>
-                <option value="Bourg-La-Reine">Bourg-La-Reine</option>
-                <option value="Bry-Sur-Marne">Bry-Sur-Marne</option>
-                <option value="Cachan">Cachan</option>
-              </select></td></tr>
-            
+            <td>
+              <input type="text" id="ville" name="ville" list="villes" class="form-control" required>
+              <datalist id="villes">
+                <option value="Paris 01">
+                <option value="Paris 02">
+                <option value="Paris 03">
+                <option value="Paris 04">
+                <option value="Paris 05">
+                <option value="Paris 06">
+                <option value="Paris 07">
+                <option value="Paris 08">
+                <option value="Paris 09">
+                <option value="Paris 10">
+                <option value="Paris 11">
+                <option value="Paris 12">
+                <option value="Paris 13">
+                <option value="Paris 14">
+                <option value="Paris 15">
+                <option value="Paris 16">
+                <option value="Paris 17">
+                <option value="Paris 18">
+                <option value="Paris 19">
+                <option value="Paris 20">
+                <option value="Ablon-Sur-Seine">
+                <option value="Alfortville">
+                <option value="Antony">
+                <option value="Arcueil">
+                <option value="Asnieres-Sur-Seine">
+                <option value="Aubervilliers">
+                <option value="Aulnay-Sous-Bois">
+                <option value="Bagneux">
+                <option value="Bagnolet">
+                <option value="Bobigny">
+                <option value="Bois-Colombes">
+                <option value="Boissy-Saint-Leger">
+                <option value="Bondy">
+                <option value="Bonneuil-Sur-Marne">
+                <option value="Boulogne-Billancourt">
+                <option value="Bourg-La-Reine">
+                <option value="Bry-Sur-Marne">
+                <option value="Cachan">
+              </datalist>
+            </td></tr>
+
         </tbody>
     </table>
 
-     
+
 <br /><br />
 
 <p align="center"><strong>Type de logement :</strong><font color="#ffe237">*
@@ -148,43 +170,6 @@
 </div>
 
 
-<!--
-<div class="row gx-0">
-  <div class="col" align="center"> <strong>Type de logement</strong><font color="#ffe237">*</font color> <br />
-    <input 
-    type="radio" 
-    id="apt" 
-    name="apt" 
-    value="Appartement">
-    <label for="apt">Appartement </label>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <input
-    type="radio"
-    id='maison'
-    name='maison'
-    value='Maison'>
-    <label for="maison">Maison</label>
-
-    
-      <input 
-    type="checkbox" 
-    name="pfm" 
-    value="linux" 
-    checked /> Appartement
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <input
-      type="checkbox"
-      name="pfm"
-      value="dos"
-    />
-    Maison &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-   
-    <br />  <br />
-    
-    
-    </div>
-</div>
--->
 
       <div class="col-auto px-2" align="center">
         <br /><button type="submit" class="btn btn-block">
@@ -198,23 +183,23 @@
            <button class="btn btn-primary btn-sm" disabled>HTML</button>
            <button class="btn btn-primary btn-sm" disabled>CSS</button>
            <br/>
-           
+
            <!-- Frameworks -->
            <button class="btn btn-success btn-sm" disabled>Flask</button>
            <button class="btn btn-success btn-sm" disabled>Bootstrap</button>
            <br/>
-           
+
            <!-- Modèles ML -->
            <button class="btn btn-warning btn-sm" disabled>scikit-learn</button>
            <button class="btn btn-warning btn-sm" disabled>Ridge Regression</button>
            <br/>
-           
+
            <!-- Librairies -->
            <button class="btn btn-info btn-sm" disabled>Pandas</button>
            <button class="btn btn-info btn-sm" disabled>NumPy</button>
            <button class="btn btn-info btn-sm" disabled>Plotly</button>
            <br/>
-           
+
            <!-- Outils -->
            <button class="btn btn-secondary btn-sm" disabled>Git</button>
            <button class="btn btn-secondary btn-sm" disabled>Jupyter</button>
@@ -385,11 +370,11 @@
     </div>
 
     <br />
-    
+
     <div class="gitHub">
       <a href="https://github.com/joaomacalos/projet-immobilier-paris" target="_blank"> Open-source code </a
       ><img src="static/githubj.png" width="30px" /> 
-     
+
 
 
 
