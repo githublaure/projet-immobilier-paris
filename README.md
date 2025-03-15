@@ -30,9 +30,32 @@ The model is trained on the following data:
 - StandardScaler for feature normalization
 - pandas for data processing
 
-## Model Performance
-- RMSE: 51,367.86 €
-- R²: 0.783
+## Détails du Modèle Machine Learning
+
+### Pipeline de Modélisation
+Notre modèle utilise une approche Ridge Regression (régression linéaire avec régularisation L2) optimisée par validation croisée. Le choix s'est porté sur ce modèle pour sa robustesse et sa capacité à gérer les corrélations entre variables.
+
+### Variables Utilisées
+- Surface habitable (m²)
+- Nombre de pièces principales
+- Distance à la station RATP la plus proche
+- Année de transaction
+- Revenus médians de la commune
+- Densité de stations RATP/SNCF
+- Présence d'espaces verts
+- Présence d'établissements scolaires
+
+### Prétraitement
+- Standardisation des variables numériques (StandardScaler)
+- Encodage des variables catégorielles (OneHotEncoder)
+- Traitement des valeurs manquantes par la moyenne du département
+
+### Performance du Modèle
+- RMSE: 51,367.86 € (erreur moyenne)
+- R²: 0.783 (78.3% de la variance expliquée)
+
+### Validation
+Le modèle est validé sur un jeu de test représentant 15% des données, avec une stratification sur les codes postaux pour assurer une bonne représentativité géographique.
 
 ## How to Use
 1. Enter the property address
