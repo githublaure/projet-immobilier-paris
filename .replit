@@ -6,3 +6,15 @@ channel = "stable-24_05"
 
 [deployment]
 run = ["sh", "-c", "python run ml-final.py"]
+
+[workflows]
+runButton = "Run ML Model"
+
+[[workflows.workflow]]
+name = "Run ML Model"
+author = 29941025
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python ml-final.py"
