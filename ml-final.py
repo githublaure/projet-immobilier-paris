@@ -46,16 +46,16 @@ def index():
     if request.method == 'POST':
         try:
             # Get form data
-            address = request.form['adresse']
-            city = request.form['ville']
-            property_type = request.form['local']
+            address = request.form.get('adresse', '')
+            city = request.form.get('ville', '')
+            property_type = request.form.get('local', '')
 
-            # Make prediction using sample data.  Error handling added.
+            # Make prediction using input data with defaults
             sample_house = pd.DataFrame({
-                'surface': [float(request.form.get('surface', 75))],  # Default to 75 if not provided
-                'nombre_pieces_principales': [int(request.form.get('nombre_pieces_principales', 3))], # Default to 3
-                'gare_proche': [float(request.form.get('gare_proche', 0.5))], # Default to 0.5
-                'year': [int(request.form.get('year', 2020))] # Default to 2020
+                'surface': [75.0],  # Default surface
+                'nombre_pieces_principales': [3], 
+                'dist_ratp': [0.5], # Using dist_ratp instead of gare_proche
+                'year': [2023]
             })
 
             sample_scaled = scaler.transform(sample_house)
