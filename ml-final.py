@@ -63,7 +63,7 @@ def index():
                 if location:
                     # Load RATP stations data
                     stations_ratp = pd.read_csv('static/ratp-geocoordinates.csv')
-                    
+
                     # Calculate distance to nearest RATP station
                     distances = stations_ratp.apply(
                         lambda row: geodesic(
@@ -75,11 +75,13 @@ def index():
                     min_dist_ratp = distances.min()
 
                     # Create sample with real location data
+                    property_type = request.form.get('local', 'Appartement')
                     sample_house = pd.DataFrame({
                         'surface': [float(request.form.get('surface', 75.0))],
                         'nombre_pieces_principales': [int(request.form.get('pieces', 3))],
                         'dist_ratp': [min_dist_ratp],
-                        'year': [datetime.datetime.now().year]
+                        'year': [datetime.datetime.now().year],
+                        'type_local': [property_type]
                     })
                 else:
                     raise ValueError("Adresse non trouvée")
