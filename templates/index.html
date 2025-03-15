@@ -12,29 +12,27 @@
     />
 
 
-    <!-- Add Google Places API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var input = document.getElementById('adresse');
-            var autocomplete = new google.maps.places.Autocomplete(input, {
-                componentRestrictions: { country: 'fr' },
-                fields: ['address_components']
+            var adresseSelect = document.getElementById('adresse');
+            var villeInput = document.getElementById('ville');
+            
+            adresseSelect.addEventListener('change', function() {
+                // Map of addresses to their corresponding cities
+                const addressToCity = {
+                    "45 avenue des Champs-Élysées": "Paris 08",
+                    "12 rue de Rivoli": "Paris 04",
+                    "3 place de la République": "Paris 03",
+                    "158 boulevard Haussmann": "Paris 08",
+                    "24 rue du Commerce": "Paris 15",
+                    "56 rue de la Roquette": "Paris 11"
+                };
+                
+                villeInput.value = addressToCity[this.value] || '';
             });
-
-            autocomplete.addListener('place_changed', function() {
-                var place = autocomplete.getPlace();
-                var city = '';
-
-                for (var component of place.address_components) {
-                    if (component.types.includes('locality')) {
-                        city = component.long_name;
-                        break;
-                    }
-                }
-
-                document.getElementById('ville').value = city;
-            });
+            
+            // Trigger change event for initial selected value
+            adresseSelect.dispatchEvent(new Event('change'));
         });
     </script>
 
