@@ -55,7 +55,7 @@ def index():
                 'surface': [75.0],  # Default surface
                 'nombre_pieces_principales': [3], 
                 'dist_ratp': [0.5], # Using dist_ratp instead of gare_proche
-                'year': [2023]
+                'year': [2021]
             })
 
             sample_scaled = scaler.transform(sample_house)
