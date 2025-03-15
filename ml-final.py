@@ -50,13 +50,32 @@ def index():
             city = request.form.get('ville', '')
             property_type = request.form.get('local', '')
 
-            # Make prediction using input data with defaults
-            sample_house = pd.DataFrame({
-                'surface': [75.0],  # Default surface
-                'nombre_pieces_principales': [3], 
-                'dist_ratp': [0.5], # Using dist_ratp instead of gare_proche
-                'year': [2021]
-            })
+            # Sample addresses database
+            addresses_db = {
+                "10 RUE DE LA PAIX PARIS": {'surface': 85.0, 'pieces': 4, 'dist_ratp': 0.3},
+                "25 AVENUE DES CHAMPS ELYSEES PARIS": {'surface': 120.0, 'pieces': 5, 'dist_ratp': 0.2},
+                "15 RUE DE RIVOLI PARIS": {'surface': 65.0, 'pieces': 3, 'dist_ratp': 0.4},
+                "8 PLACE VENDOME PARIS": {'surface': 95.0, 'pieces': 4, 'dist_ratp': 0.3},
+                "30 RUE DU COMMERCE PARIS": {'surface': 55.0, 'pieces': 2, 'dist_ratp': 0.5}
+            }
+
+            # Get address data or use defaults
+            address_upper = address.upper()
+            if address_upper in addresses_db:
+                addr_data = addresses_db[address_upper]
+                sample_house = pd.DataFrame({
+                    'surface': [addr_data['surface']],
+                    'nombre_pieces_principales': [addr_data['pieces']],
+                    'dist_ratp': [addr_data['dist_ratp']],
+                    'year': [2021]
+                })
+            else:
+                sample_house = pd.DataFrame({
+                    'surface': [75.0],
+                    'nombre_pieces_principales': [3],
+                    'dist_ratp': [0.5],
+                    'year': [2021]
+                })
 
             sample_scaled = scaler.transform(sample_house)
             predicted_price = model.predict(sample_scaled)[0]
