@@ -50,26 +50,17 @@ def index():
             city = request.form.get('ville', '')
             property_type = request.form.get('local', '')
 
-            # Sample addresses database
-            addresses_db = {
-                "10 RUE DE LA PAIX PARIS": {'surface': 85.0, 'pieces': 4, 'dist_ratp': 0.3},
-                "25 AVENUE DES CHAMPS ELYSEES PARIS": {'surface': 120.0, 'pieces': 5, 'dist_ratp': 0.2},
-                "15 RUE DE RIVOLI PARIS": {'surface': 65.0, 'pieces': 3, 'dist_ratp': 0.4},
-                "8 PLACE VENDOME PARIS": {'surface': 95.0, 'pieces': 4, 'dist_ratp': 0.3},
-                "30 RUE DU COMMERCE PARIS": {'surface': 55.0, 'pieces': 2, 'dist_ratp': 0.5}
-            }
+            # Use default values for any address
+            sample_house = pd.DataFrame({
+                'surface': [75.0],  # Default surface area
+                'nombre_pieces_principales': [3],  # Default number of rooms
+                'dist_ratp': [0.5],  # Default distance to metro
+                'year': [2021]  # Current year
+            })
 
-            # Get address data or use defaults
+            # Store the address for display purposes
             address_upper = address.upper()
-            if address_upper in addresses_db:
-                addr_data = addresses_db[address_upper]
-                sample_house = pd.DataFrame({
-                    'surface': [addr_data['surface']],
-                    'nombre_pieces_principales': [addr_data['pieces']],
-                    'dist_ratp': [addr_data['dist_ratp']],
-                    'year': [2021]
-                })
-            else:
+            if not address:
                 sample_house = pd.DataFrame({
                     'surface': [75.0],
                     'nombre_pieces_principales': [3],
