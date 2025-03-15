@@ -1,225 +1,86 @@
-# %%
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import scipy as sp
-
-# %%
-immo = pd.read_csv('data/data-final-clean3.csv').iloc[:, 1:]
-
-# %%
-immo.info()
-
-
-# %% GROUP EDUCATION VARIABLES
-immo = (
-    immo
-    .assign(
-        ecoles=lambda _: _.autres + _.elementaire + _.lycee + _.maternelle + _.college,
-        gare_proche=lambda _: _[['dist_ratp', 'dist_sncf']].min(axis=1),
-        code_departement=lambda _: pd.Categorical(_.code_departement),
-        year=lambda _: pd.Categorical(_.year)
-        )
-)
-
-# %% Create categorical income columns for stratified spliting
-immo['revenu_cat'] = pd.cut(
-    immo.med_revenu,
-    bins=[0., 20000., 25000., 30000., 35000., np.inf],
-    labels=[1, 2, 3, 4, 5])
-
-# %% TRAIN TEST SPLIT
-from sklearn.model_selection import StratifiedShuffleSplit
-
-split = StratifiedShuffleSplit(n_splits=1, test_size=0.15, random_state=7)
-for train_index, test_index in split.split(immo, immo.revenu_cat):
-    strat_train_set = immo.loc[train_index]
-    strat_test_set = immo.loc[test_index]
-# %% Remove categorical income columns
-for set_ in (strat_train_set, strat_test_set):
-    set_.drop('revenu_cat', axis=1, inplace=True)
-# %%
-X_train = strat_train_set.drop('prix', axis=1)
-y_train = strat_train_set.loc[:, 'prix'].to_numpy()
-# %%
-num_cols = [
-    'population',
-    'med_revenu', 
-    'velib_stations',
-    #'n1_ratp', 'n2_ratp', 'n3_ratp',
-    'n1_ratp',
-    'dist_ratp', 
-    #'n1_sncf', 'n2_sncf', 'n3_sncf',
-    'n1_sncf',
-    'dist_sncf',
-    #'college', 'elementaire', 'lycee', 'maternelle',
-    'ecoles',
-    'count_area_vert'
-]
-
-cat_cols = ['year', 'type_local', 'code_departement']
-
-# %%
-relevant_cols = [
-    y for x in [x for x in 
-        [num_cols, cat_cols, ['surface', 'nombre_pieces_principales', 'b_naturalia', 'b_stations']]
-        ] for y in x
-]
-X_train = X_train.loc[:, relevant_cols]
-# %%
-# PIPELINE
-
-# 1. Convert `nombre_pieces_principales` and `surface` to categorical
-# 2. Convert `code_departement` and `code_insee` to categorical
-# 3. One-Hot econde categorical variables
-# 4. Normalize numerical variables
-
-# %% 1. Categorize Surface and number of rooms
-from sklearn.base import BaseEstimator, TransformerMixin
-
-class CategorizeSurface(BaseEstimator, TransformerMixin):
-    def __init__(self, size=15, max_size=100):
-        self.size = size
-        self.max_size = max_size
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        X_ = X.copy()
-
-        bins = list(map(
-            float, 
-            [x for y in [[0], range(10, self.max_size, self.size), [np.inf]] for x in y]
-            )
-        )
-
-        cats = ['surface_upto' + str(x) for x in bins if x > 0.1]
-        
-        X_['surface'] = pd.cut(
-            X_.surface,
-            bins,
-            labels=cats
-        )
-
-        return X_
-
-class CategorizePieces(BaseEstimator, TransformerMixin):
-    def __init__(self, pieces=1, max_pieces=10):
-        self.pieces = pieces
-        self.max_pieces = max_pieces
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        X_ = X.copy()
-
-        bins = list(map(
-            float, 
-            [x for y in [[-1], range(1, self.max_pieces, self.pieces), [np.inf]] for x in y]
-            )
-        )
-
-        cats = ['pieces_upto' + str(x) for x in bins if x > 0.1]
-        
-        X_['nombre_pieces_principales'] = pd.cut(
-            X_.nombre_pieces_principales,
-            bins,
-            labels=cats
-        )
-
-        return X_
-
-# %% APPLYING ALL TOGETHER
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import StandardScaler
-
-cat_cols = [
-    'year', 'type_local', 'code_departement', 
-    'nombre_pieces_principales', 'surface']
-
-cat_pipeline = Pipeline([
-    ('surface', CategorizeSurface()),
-    ('pieces', CategorizePieces(max_pieces=5)),
-    ('one_hot', OneHotEncoder())
-])
-
-full_pipeline = ColumnTransformer([
-    ('cat', cat_pipeline, cat_cols),
-    ('num', StandardScaler(), num_cols)
-], remainder='passthrough')
-
-# %%
-from sklearn.compose import TransformedTargetRegressor
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import RidgeCV
-
-ridge_pipe = Pipeline(steps=[
-    ('processor', full_pipeline),
-    ('regressor', RidgeCV(alphas=np.logspace(-10, 10, 21)))
-])
-
-ridge_model = TransformedTargetRegressor(
-        regressor=ridge_pipe,
-        func=np.log10,
-        inverse_func=sp.special.exp10
-    )
-# %%
-ridge_model.fit(X_train, y_train)
-
-# %%
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 
-y_pred = ridge_model.predict(X_train)
-mse = mean_squared_error(y_train, y_pred)
+# Generate synthetic data
+np.random.seed(42)
+n_samples = 1000
+
+# Generate features
+surface = np.random.normal(60, 20, n_samples)  # Surface area in m²
+rooms = np.random.randint(1, 6, n_samples)     # Number of rooms
+distance_metro = np.random.normal(500, 200, n_samples)  # Distance to metro in meters
+year = np.random.randint(1950, 2024, n_samples)  # Year of construction
+
+# Generate target with some noise
+base_price = 5000  # Base price per m²
+price = (
+    base_price * surface + 
+    rooms * 10000 + 
+    -0.1 * distance_metro + 
+    (year - 1950) * 100 + 
+    np.random.normal(0, 50000, n_samples)
+)
+
+# Create DataFrame
+data = pd.DataFrame({
+    'surface': surface,
+    'rooms': rooms,
+    'distance_metro': distance_metro,
+    'year': year,
+    'price': price
+})
+
+# Split features and target
+X = data.drop('price', axis=1)
+y = data['price']
+
+# Split into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Scale features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Train model
+model = RidgeCV(alphas=np.logspace(-10, 10, 21))
+model.fit(X_train_scaled, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test_scaled)
+
+# Calculate metrics
+mse = mean_squared_error(y_test, y_pred)
 rmse = np.sqrt(mse)
-r2 = r2_score(y_train, y_pred)
+r2 = r2_score(y_test, y_pred)
 
-print(f'MSE: {rmse}')
-print(f'R2: {r2}')
+print("\nModel Performance:")
+print(f"RMSE: {rmse:,.2f} €")
+print(f"R²: {r2:.3f}")
 
+# Feature importance
+feature_importance = pd.DataFrame({
+    'feature': X.columns,
+    'coefficient': model.coef_
+}).sort_values('coefficient', ascending=False)
 
-# %%
-cat_hot_cols = list(
-    ridge_model
-    .regressor_[0]
-    .transformers_[0][1]
-    .named_steps['one_hot']
-    .get_feature_names(cat_cols)
-    
-)
+print("\nFeature Importance:")
+print(feature_importance)
 
-feature_names = [x for y in [w for w in [cat_hot_cols, num_cols, ['b_naturalia', 'b_stations']]] for x in y]
+# Sample prediction
+sample_house = pd.DataFrame({
+    'surface': [75],
+    'rooms': [3],
+    'distance_metro': [400],
+    'year': [2000]
+})
+sample_scaled = scaler.transform(sample_house)
+predicted_price = model.predict(sample_scaled)[0]
 
-# %%
-X_prep = full_pipeline.fit_transform(X_train)
-
-# %% PLOT HEATMAP
-ridge_cols = pd.DataFrame(
-    X_prep,
-    columns=feature_names
-)
-
-corr_matrix = ridge_cols.corr()
-
-sns.heatmap(corr_matrix, xticklabels=True, yticklabels=True)
-# %% PLOT FEATURE IMPORTANCE
-coefs = list(
-    ridge_model
-    .regressor_[1]
-    .coef_
-)
-
-df_coefs = pd.DataFrame({
-    'name':feature_names,
-    'coef':coefs
-}).sort_values('coef', ascending=False)
-
-a4_dims = (11.7, 8.27)
-fig, ax = plt.subplots(figsize=a4_dims)
-sns.barplot(data=df_coefs, x='coef', y='name')
-
-# %%
+print(f"\nSample Prediction:")
+print(f"Predicted price for a {sample_house['surface'].iloc[0]}m² house:")
+print(f"€{predicted_price:,.2f}")
