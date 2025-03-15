@@ -10,7 +10,8 @@ app = Flask(__name__)
 # Load and prepare model
 try:
     data = pd.read_csv('data/data-final-clean3.csv')
-    features = ['surface', 'nombre_pieces_principales', 'gare_proche', 'year']
+    # Map features from the data
+    features = ['surface', 'nombre_pieces_principales', 'dist_ratp', 'year']
     X = data[features].copy()
     X['revenu_cat'] = pd.cut(data.med_revenu, bins=[0., 20000., 25000., 30000., 35000., np.inf], labels=[1, 2, 3, 4, 5])
     y = data['prix_mcarre']
