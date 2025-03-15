@@ -16,13 +16,14 @@ try:
     X['revenu_cat'] = pd.cut(data.med_revenu, bins=[0., 20000., 25000., 30000., 35000., np.inf], labels=[1, 2, 3, 4, 5])
     y = data['prix_mcarre']
 
-    # Train model
-    split = StratifiedShuffleSplit(n_splits=1, test_size=0.15, random_state=7)
-    for train_index, test_index in split.split(X, X['revenu_cat']):
-        X_train = X.loc[train_index].drop('revenu_cat', axis=1)
-        X_test = X.loc[test_index].drop('revenu_cat', axis=1)
-        y_train = y.loc[train_index]
-        y_test = y.loc[test_index]
+    # Train model using simple train test split
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X.drop('revenu_cat', axis=1), 
+        y, 
+        test_size=0.15, 
+        random_state=7
+    )
 
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
